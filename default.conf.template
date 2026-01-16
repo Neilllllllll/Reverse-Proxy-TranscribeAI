@@ -1,6 +1,24 @@
+
 server {
-    listen 80;  # The server listens on port 80 (standard HTTP port)
+    listen 80;
+    server_name #entrer le nom du server;
+    # Redirection du http vers le https
+    return 301 https://$host$request_uri;
+}
+
+
+
+server {
+    listen 443 ssl;
+    server_name #entrer le nom du server;
+
+    # Taille max des fichiers pouvant être transmis
     client_max_body_size ${NGINX_MAX_BODY_SIZE};
+
+    # Chemin vers les fichiers .pem
+    ssl_certificate     /etc/nginx/ssl/fullchain.crt;
+    ssl_certificate_key /etc/nginx/ssl/privkey.pem;
+
     location /api {
         # All requests to paths starting with /api will be handled here.
         proxy_pass http://api:5000;  # Forward requests to the Flask backend running on port 5000.
