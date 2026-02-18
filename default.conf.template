@@ -1,23 +1,20 @@
-
 server {
     listen 80;
-    server_name #entrer le nom du server;
+    server_name ${SERVER_NAME};
     # Redirection du http vers le https
     return 301 https://$host$request_uri;
 }
 
-
-
 server {
     listen 443 ssl;
-    server_name #entrer le nom du server;
+    server_name ${SERVER_NAME};
 
     # Taille max des fichiers pouvant être transmis
     client_max_body_size ${NGINX_MAX_BODY_SIZE};
 
     # Chemin vers les fichiers .pem
-    ssl_certificate     /etc/nginx/ssl/fullchain.crt;
-    ssl_certificate_key /etc/nginx/ssl/privkey.pem;
+    ssl_certificate     /etc/nginx/ssl/${SSL_CERT_NAME};
+    ssl_certificate_key /etc/nginx/ssl/${SSL_KEY_NAME};
 
     location /api {
         # All requests to paths starting with /api will be handled here.
